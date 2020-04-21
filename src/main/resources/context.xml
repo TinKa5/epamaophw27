@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <bean id="xmlConfigAspect" class="ua.epam.xmlConfig.XmlAspect"/>
+    <bean id="bakery"  class="ua.epam.model.Bakery"/>
+
+    <aop:config>
+
+        <aop:pointcut id="loggingAnnotation" expression="@annotation(ua.epam.annotation.Log)"/>
+
+        <aop:pointcut id="loggingPack" expression="execution(* ua.epam.model.Bakery.pack(..))"/>
+        <aop:aspect ref="xmlConfigAspect">
+            <aop:before method="beforeAdvice" pointcut-ref="loggingAnnotation"/>
+            <aop:after method="returnAdvice" pointcut-ref="loggingPack"/>
+        </aop:aspect>
+    </aop:config>
+
+
+
+</beans>
